@@ -1,0 +1,12 @@
+.notification {
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+  padding: 1rem;
+  background-color: #eee;
+  border-radius: .5rem;
+  border: .2rem solid lightseagreen;
+}
+
+.notification--error {
+  border-color: crimson;
+}

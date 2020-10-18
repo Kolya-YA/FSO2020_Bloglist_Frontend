@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import Blog from './components/Blog'
 import LoginForm from './components/LoginForm'
 import NewBlog from './components/NewBlog'
+import TopNotifications from './components/TopNotifications/TopNotification'
 import blogService from './services/blogs'
 import loginService from './services/login'
 
@@ -11,6 +12,7 @@ const App = () => {
   const [password, setPassword] = useState('123pupkine1')
   const [user, setUser] = useState(null)
   const [newBlog, setNewBlog] = useState({ title: '', author: '', url: '' })
+  const [notification, setNotification] = useState({ text: '', error: false})
 
   useEffect(() => {
     const fetchBlogs = async () => {
@@ -28,6 +30,14 @@ const App = () => {
     }
   }, [])
 
+  const addNotification = (text, time = 5000, error = false) => {
+    setNotification({ text, error })
+    console.log('callNot', notification)
+    setTimeout(() => {
+      setNotification([])
+    }, time)
+  }
+
   const handleLogin = async event => {
     event.preventDefault()
     try {
@@ -36,14 +46,18 @@ const App = () => {
       setUser(user)
       setLogin('')
       setPassword('')
+      addNotification(`${user.name} is logged in`, 2000)
     } catch (exeption) {
-      console.log('Catched error', exeption)
+      const res = exeption.response
+      const errMsg = `Error: ${res.status} ${res.statusText}. ${res.data.error}.`
+      addNotification(errMsg, 10000, true)
     }
   }
 
   const handleLogout = event => {
     event.preventDefault()
     localStorage.removeItem('loggedUser')
+    addNotification(`${user.name} is logged out`)
     setUser(null)
   }
   
@@ -53,13 +67,24 @@ const App = () => {
       const addedNewBlog = await blogService.addNewBlog(user.token, newBlog)
       setBlogs(blogs.concat(addedNewBlog))
       setNewBlog({ title: '', author: '', url: '' })
+      addNotification(`A new blog ${addedNewBlog.title} by ${addedNewBlog.author} added`)
     } catch (exeption) {
-      console.log('Catched error', exeption)
+      const res = exeption.response
+      console.error('Catched error rsp: ', res)
+      const errMsg = `Error: ${res.status} ${res.statusText}. ${res.data.name}. ${res.data.message}.`
+      addNotification(errMsg, 10000, true)
     }
   }
 
   return (
     <div>
+      <h2>Blogs</h2>
+      { notification.text &&
+        <TopNotifications 
+          text={notification.text}
+          error={notification.error}
+        />
+      }
       { !user &&
         <LoginForm
           login={login}
@@ -71,7 +96,6 @@ const App = () => {
       }
       { user &&
         <div>
-          <h2>Blogs</h2>
           <div>
             <strong>{user.name}</strong> logged in 
             <button onClick={handleLogout}>
