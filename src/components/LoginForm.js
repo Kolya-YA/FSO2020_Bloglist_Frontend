@@ -15,7 +15,7 @@ const LoginForm = props => {
         <label>Login (e-mail): 
           <input
             type='text'
-            // required
+            required
             value={login}
             name='login'
             onChange={({ target }) => setLogin(target.value)}
@@ -25,7 +25,7 @@ const LoginForm = props => {
         <label>Password: 
           <input
             type='password'
-            // required
+            required
             value={password}
             name='password'
             onChange={({ target }) => setPassword(target.value)}
