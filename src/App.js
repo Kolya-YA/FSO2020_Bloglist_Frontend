@@ -11,7 +11,6 @@ const App = () => {
   const [login, setLogin] = useState('pupkine-1@example.com')
   const [password, setPassword] = useState('123pupkine1')
   const [user, setUser] = useState(null)
-  const [newBlog, setNewBlog] = useState({ title: '', author: '', url: '' })
   const [notification, setNotification] = useState({ text: '', error: false})
 
   useEffect(() => {
@@ -61,12 +60,10 @@ const App = () => {
     setUser(null)
   }
   
-  const handleNewBlogSubmit = async event => {
-    event.preventDefault()
+  const createNewBlog = async newBlog => {
     try {
       const addedNewBlog = await blogService.addNewBlog(user.token, newBlog)
       setBlogs(blogs.concat(addedNewBlog))
-      setNewBlog({ title: '', author: '', url: '' })
       addNotification(`A new blog ${addedNewBlog.title} by ${addedNewBlog.author} added`)
     } catch (exeption) {
       const res = exeption.response
@@ -103,9 +100,7 @@ const App = () => {
             </button>
           </div>
           <NewBlog
-            newBlog={newBlog}
-            setNewBlog={setNewBlog}
-            handleNewBlogSubmit={handleNewBlogSubmit}
+            createNewBlog={createNewBlog}
           />
           <h3>Blogs list</h3>
           {blogs.map(blog =>
