@@ -13,24 +13,24 @@ const LoginForm = props => {
     <>
       <h2>Login to Bloglist application</h2>
       <form onSubmit={handleLogin}>
-        <label>Login (e-mail): 
+        <label>Login (e-mail):
           <input
             type='text'
             required
             value={login}
             name='login'
             onChange={({ target }) => setLogin(target.value)}
-            />
+          />
         </label>
         <br/>
-        <label>Password: 
+        <label>Password:
           <input
             type='password'
             required
             value={password}
             name='password'
             onChange={({ target }) => setPassword(target.value)}
-            />
+          />
         </label>
         <br />
         <button type='submit'>Login</button>

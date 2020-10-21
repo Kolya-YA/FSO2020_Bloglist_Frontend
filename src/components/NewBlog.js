@@ -4,7 +4,6 @@ const NewBlog = props => {
     createNewBlog,
   } = props
 
-  
   const [newBlog, setNewBlog] = useState({ title: '', author: '', url: '' })
   const [showNewBlogForm , setShowNewBlogForm] = useState(false)
 
@@ -16,7 +15,7 @@ const NewBlog = props => {
   }
 
   const handleNewBlogChange = e => {
-    setNewBlog({...newBlog, [e.target.name]: e.target.value })
+    setNewBlog({ ...newBlog, [e.target.name]: e.target.value })
   }
 
   const addNewBlog = event => {
@@ -30,41 +29,41 @@ const NewBlog = props => {
     <section>
       { showNewBlogForm &&
         <div>
-        <h3>Create new blog</h3>
-        <form onSubmit={addNewBlog}>
-          <label>Title: 
-            <input
-              type='text'
-              // required
-              value={newBlog.title}
-              name='title'
-              onChange={handleNewBlogChange}
+          <h3>Create new blog</h3>
+          <form onSubmit={addNewBlog}>
+            <label>Title:
+              <input
+                type='text'
+                // required
+                value={newBlog.title}
+                name='title'
+                onChange={handleNewBlogChange}
               />
-          </label>
-          <br/>
-          <label>Author: 
-            <input
-              type='text'
-              // required
-              value={newBlog.author}
-              name='author'
-              onChange={handleNewBlogChange}
+            </label>
+            <br/>
+            <label>Author:
+              <input
+                type='text'
+                // required
+                value={newBlog.author}
+                name='author'
+                onChange={handleNewBlogChange}
               />
-          </label>
-          <br/>
-          <label>URL: 
-            <input
-              type='text'
-              // required
-              value={newBlog.url}
-              name='url'
-              onChange={handleNewBlogChange}
+            </label>
+            <br/>
+            <label>URL:
+              <input
+                type='text'
+                // required
+                value={newBlog.url}
+                name='url'
+                onChange={handleNewBlogChange}
               />
-          </label>
-          <br />
-          <button type='submit'>Create new blog</button>
-        </form>
-      </div>
+            </label>
+            <br />
+            <button type='submit'>Create new blog</button>
+          </form>
+        </div>
       }
       <button onClick={handleToggleNewBlogForm}>{btnText}</button>
     </section>

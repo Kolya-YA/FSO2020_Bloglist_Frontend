@@ -1,6 +1,5 @@
 import React, { useState } from 'react'
 
-
 const Blog = ({ blog, user, updateBlog, deleteBlog }) => {
   const [fullView, setFullView] = useState(false)
 
@@ -29,22 +28,22 @@ const Blog = ({ blog, user, updateBlog, deleteBlog }) => {
     if (window.confirm(delMsg)) deleteBlog(blog)
   }
 
-  
+
   return (
-  <li className='blogList__item'>
-    <div>
-      Title: <strong>{blog.title}</strong> 
-      <button onClick={toogleView}>
-        Show {fullView ? 'less' : 'more'}
-      </button>
-    </div>
-    <div style={{display: fullView || 'none'}}>
-      URL: <strong>{blog.url}</strong><br />
-      Likes: <strong>{blog.likes}</strong> <button onClick={likePlusHandler}>Like +</button><br /> 
-      Author: {blog.author}<br />
-      {showDelButton() && <button onClick={hadlerDelButton}>Delete</button>}
-    </div>
-  </li>
-)}
+    <li className='blogList__item'>
+      <div>
+        Title: <strong>{blog.title} </strong>
+        <button onClick={toogleView}>
+          Show {fullView ? 'less' : 'more'}
+        </button>
+      </div>
+      <div style={{ display: fullView || 'none' }}>
+        URL: <strong>{blog.url}</strong><br />
+        Likes: <strong>{blog.likes}</strong> <button onClick={likePlusHandler}>Like +</button><br />
+        Author: {blog.author}<br />
+        {showDelButton() && <button onClick={hadlerDelButton}>Delete</button>}
+      </div>
+    </li>
+  )}
 
 export default Blog

@@ -31,7 +31,7 @@ const deleteBlog = async (blogId, token) => {
   return response.data
 }
 
-export default { 
+export default {
   getAll,
   addNewBlog,
   updateBlog,

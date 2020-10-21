@@ -12,12 +12,12 @@ const App = () => {
   const [login, setLogin] = useState('pupkine-1@example.com')
   const [password, setPassword] = useState('123pupkine1')
   const [user, setUser] = useState(null)
-  const [notification, setNotification] = useState({ text: '', error: false})
+  const [notification, setNotification] = useState({ text: '', error: false })
 
   useEffect(() => {
     const fetchBlogs = async () => {
       const blogs = await blogService.getAll()
-      setBlogs(blogs)  
+      setBlogs(blogs)
     }
     fetchBlogs()
   }, [])
@@ -59,7 +59,7 @@ const App = () => {
     addNotification(`${user.name} is logged out`)
     setUser(null)
   }
-  
+
   const createNewBlog = async newBlog => {
     try {
       const addedNewBlog = await blogService.addNewBlog(user.token, newBlog)
@@ -86,11 +86,10 @@ const App = () => {
       addNotification(errMsg, 10000, true)
     }
   }
-  
+
   const deleteBlog = async blog => {
     try {
-      const delRsp = await blogService.deleteBlog(blog.id, user.token)
-      console.log('delResp :', delRsp)
+      await blogService.deleteBlog(blog.id, user.token)
       const otherBlogs = blogs.filter(b => b.id !== blog.id)
       setBlogs(otherBlogs)
       addNotification(`Blog ${blog.title} deleted`)
@@ -106,7 +105,7 @@ const App = () => {
     <div>
       <h2>Blogs</h2>
       { notification.text &&
-        <TopNotifications 
+        <TopNotifications
           text={notification.text}
           error={notification.error}
         />
@@ -123,10 +122,7 @@ const App = () => {
       { user &&
         <div>
           <div>
-            <strong>{user.name}</strong> logged in 
-            <button onClick={handleLogout}>
-              Logout
-            </button>
+            <strong>{user.name}</strong> logged in <button onClick={handleLogout}>Logout</button>
           </div>
           <NewBlog
             createNewBlog={createNewBlog}
