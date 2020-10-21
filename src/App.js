@@ -31,7 +31,6 @@ const App = () => {
 
   const addNotification = (text, time = 5000, error = false) => {
     setNotification({ text, error })
-    console.log('callNot', notification)
     setTimeout(() => {
       setNotification([])
     }, time)
@@ -118,7 +117,7 @@ const App = () => {
           />
           <h3>Blogs list</h3>
           <ul className='blogList'>
-            {blogs.map(blog =>
+            {[...blogs].sort((a, b) => b.likes - a.likes).map(blog =>
               <Blog key={blog.id} blog={blog} updateBlog={updateBlog} />
             )}
           </ul>
