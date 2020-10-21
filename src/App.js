@@ -73,6 +73,20 @@ const App = () => {
     }
   }
 
+  const updateBlog = async (id, updatedBlog) => {
+    try {
+      const updatingBlog = await blogService.updateBlog(id, updatedBlog)
+      const otherBlogs = blogs.filter(b => b.id !== id)
+      setBlogs(otherBlogs.concat(updatingBlog))
+      addNotification(`Blog ${updatingBlog.title} updated`)
+    } catch (exeption) {
+      const res = exeption.response
+      console.error('Catched error rsp: ', res)
+      const errMsg = `Error: ${res.status} ${res.statusText}. ${res.data.name}. ${res.data.message}.`
+      addNotification(errMsg, 10000, true)
+    }
+  }
+
   return (
     <div>
       <h2>Blogs</h2>
@@ -103,9 +117,11 @@ const App = () => {
             createNewBlog={createNewBlog}
           />
           <h3>Blogs list</h3>
-          {blogs.map(blog =>
-          <Blog key={blog.id} blog={blog} />
-          )}
+          <ul className='blogList'>
+            {blogs.map(blog =>
+              <Blog key={blog.id} blog={blog} updateBlog={updateBlog} />
+            )}
+          </ul>
         </div>
       }
     </div>
