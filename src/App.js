@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import './App.css'
 import Blog from './components/Blog'
 import LoginForm from './components/LoginForm'
 import NewBlog from './components/NewBlog'
