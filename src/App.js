@@ -66,7 +66,7 @@ const App = () => {
       addNotification(`A new blog ${addedNewBlog.title} by ${addedNewBlog.author} added`)
     } catch (exeption) {
       const res = exeption.response
-      console.error('Catched error rsp: ', res)
+      console.error('Catched error response (create): ', res)
       const errMsg = `Error: ${res.status} ${res.statusText}. ${res.data.name}. ${res.data.message}.`
       addNotification(errMsg, 10000, true)
     }
@@ -80,7 +80,22 @@ const App = () => {
       addNotification(`Blog ${updatingBlog.title} updated`)
     } catch (exeption) {
       const res = exeption.response
-      console.error('Catched error rsp: ', res)
+      console.error('Catched error response (update): ', res)
+      const errMsg = `Error: ${res.status} ${res.statusText}. ${res.data.name}. ${res.data.message}.`
+      addNotification(errMsg, 10000, true)
+    }
+  }
+  
+  const deleteBlog = async blog => {
+    try {
+      const delRsp = await blogService.deleteBlog(blog.id, user.token)
+      console.log('delResp :', delRsp)
+      const otherBlogs = blogs.filter(b => b.id !== blog.id)
+      setBlogs(otherBlogs)
+      addNotification(`Blog ${blog.title} deleted`)
+    } catch (exeption) {
+      const res = exeption.response
+      console.error('Catched error resoponse (delete): ', res)
       const errMsg = `Error: ${res.status} ${res.statusText}. ${res.data.name}. ${res.data.message}.`
       addNotification(errMsg, 10000, true)
     }
@@ -118,7 +133,13 @@ const App = () => {
           <h3>Blogs list</h3>
           <ul className='blogList'>
             {[...blogs].sort((a, b) => b.likes - a.likes).map(blog =>
-              <Blog key={blog.id} blog={blog} updateBlog={updateBlog} />
+              <Blog
+                key={blog.id}
+                blog={blog}
+                user={user}
+                updateBlog={updateBlog}
+                deleteBlog={deleteBlog}
+              />
             )}
           </ul>
         </div>

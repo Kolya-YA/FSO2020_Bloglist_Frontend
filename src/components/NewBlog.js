@@ -23,6 +23,7 @@ const NewBlog = props => {
     event.preventDefault()
     createNewBlog(newBlog)
     setNewBlog({ title: '', author: '', url: '' })
+    setShowNewBlogForm(false)
   }
 
   return (

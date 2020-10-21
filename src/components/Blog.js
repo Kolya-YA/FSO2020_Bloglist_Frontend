@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 
 
-const Blog = ({ blog, updateBlog }) => {
+const Blog = ({ blog, user, updateBlog, deleteBlog }) => {
   const [fullView, setFullView] = useState(false)
 
   const toogleView = event => {
@@ -20,6 +20,15 @@ const Blog = ({ blog, updateBlog }) => {
     }
     updateBlog(blog.id, updatedBlog)
   }
+
+  const showDelButton = () => blog.user.name === user.name
+
+  const hadlerDelButton = event => {
+    event.preventDefault()
+    const delMsg = `Do you realy want to delete blog "${blog.title}" by "${blog.user.name}"`
+    if (window.confirm(delMsg)) deleteBlog(blog)
+  }
+
   
   return (
   <li className='blogList__item'>
@@ -33,6 +42,7 @@ const Blog = ({ blog, updateBlog }) => {
       URL: <strong>{blog.url}</strong><br />
       Likes: <strong>{blog.likes}</strong> <button onClick={likePlusHandler}>Like +</button><br /> 
       Author: {blog.author}<br />
+      {showDelButton() && <button onClick={hadlerDelButton}>Delete</button>}
     </div>
   </li>
 )}
