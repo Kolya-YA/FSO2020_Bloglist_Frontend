@@ -22,7 +22,7 @@ const Blog = ({ blog, user, updateBlog, deleteBlog }) => {
 
   const showDelButton = () => blog.user.name === user.name
 
-  const hadlerDelButton = event => {
+  const hadnlerDelButton = event => {
     event.preventDefault()
     const delMsg = `Do you realy want to delete blog "${blog.title}" by "${blog.user.name}"`
     if (window.confirm(delMsg)) deleteBlog(blog)
@@ -41,7 +41,7 @@ const Blog = ({ blog, user, updateBlog, deleteBlog }) => {
         URL: <strong>{blog.url}</strong><br />
         Likes: <strong>{blog.likes}</strong> <button onClick={likePlusHandler}>Like +</button><br />
         Author: {blog.author}<br />
-        {showDelButton() && <button onClick={hadlerDelButton}>Delete</button>}
+        {showDelButton() && <button onClick={hadnlerDelButton}>Delete</button>}
       </div>}
     </li>
   )}
