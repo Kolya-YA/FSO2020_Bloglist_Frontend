@@ -45,6 +45,18 @@ test('Toggle blog short/long view', () => {
   fireEvent.click(buttonLess)
   expect(component.container).not.toHaveTextContent('Test URL')
   expect(component.container).not.toHaveTextContent('100')
-  
-  
+})
+
+test('Double click to "Likes +"', () => {
+  const mockUpdater = jest.fn()
+  const component = render(
+    <Blog blog={blog} user={user} updateBlog={mockUpdater} />
+  )
+  const buttonMore = component.getByText('Show more')
+  fireEvent.click(buttonMore)
+  const buttonLikePlus = component.getByText('Like +')
+  fireEvent.click(buttonLikePlus)
+  fireEvent.click(buttonLikePlus)
+
+  expect(mockUpdater.mock.calls).toHaveLength(2)
 })
