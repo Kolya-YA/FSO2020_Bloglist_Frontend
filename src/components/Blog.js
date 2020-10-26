@@ -37,12 +37,12 @@ const Blog = ({ blog, user, updateBlog, deleteBlog }) => {
           Show {fullView ? 'less' : 'more'}
         </button>
       </div>
-      <div style={{ display: fullView || 'none' }}>
+      {fullView && <div style={{ display: fullView || 'none2' }}>
         URL: <strong>{blog.url}</strong><br />
         Likes: <strong>{blog.likes}</strong> <button onClick={likePlusHandler}>Like +</button><br />
         Author: {blog.author}<br />
         {showDelButton() && <button onClick={hadlerDelButton}>Delete</button>}
-      </div>
+      </div>}
     </li>
   )}
 
