@@ -39,7 +39,7 @@ describe('Start and login tests',function() {
   })
 
   describe.only('When loged in', function() {
-    beforeEach(function() {
+    beforeEach(() => {
       cy.login(testUser)
     })
 
@@ -51,6 +51,17 @@ describe('Start and login tests',function() {
       cy.get('.blogList>.blogList__item')
         .should('contain',testNewBlog.title)
         .and('not.contain',testNewBlog.url)
+    })
+
+    it.only('Add two likes to blog', function() {
+      cy.addNewBlog(testNewBlog)
+      cy.get('.blogList>.blogList__item').contains('button', 'Show more').click()
+      cy.get('.blogList>.blogList__item').find('[data-cy=likes-qty]').should('have.contain', '0')
+      cy.get('.blogList>.blogList__item').find('[data-cy=likes-qty]').parent().contains('button', 'Like +').as('likeBtn')
+      cy.get('@likeBtn').click()
+      cy.get('.blogList>.blogList__item').find('[data-cy=likes-qty]').should('have.contain', '1')
+      cy.get('@likeBtn').click()
+      cy.get('.blogList>.blogList__item').find('[data-cy=likes-qty]').should('have.contain', '2')
     })
   })
 })

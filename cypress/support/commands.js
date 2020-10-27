@@ -48,3 +48,15 @@ Cypress.Commands.add('addNewBlogUi', newBlog => {
   cy.get('input[name=url]').clear().type(newBlog.url)
   cy.contains('button', 'Create new blog').click()
 })
+
+Cypress.Commands.add('addNewBlog', newBlog => {
+  cy.request({
+    url: 'http://localhost:3003/api/blogs',
+    method: 'POST',
+    body: newBlog,
+    headers: {
+      'Authorization': `bearer ${JSON.parse(localStorage.getItem('loggedUser')).token}`
+    }
+  })
+  cy.reload()
+})
