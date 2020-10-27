@@ -122,7 +122,7 @@ const App = () => {
       { user &&
         <div>
           <div>
-            <strong>{user.name}</strong> logged in <button onClick={handleLogout}>Logout</button>
+            <strong>{user.name}</strong> logged in. <button onClick={handleLogout}>Logout</button>
           </div>
           <NewBlog
             createNewBlog={createNewBlog}
