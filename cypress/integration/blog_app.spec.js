@@ -4,12 +4,29 @@ describe('Start and login tests',function() {
     login: 'pupkine-1@example.com',
     password: '123pupkine1'
   }
-
-  const testNewBlog = {
-    title: 'testTitle',
-    author: 'testAuthor',
-    url: 'testURL'
+  const testUser2 = {
+    name: 'Pupkine W. User-2',
+    login: 'pupkine-2@example.com',
+    password: '123pupkine2'
   }
+
+  const testNewBlogs = [
+    {
+      title: 'testTitle1',
+      author: 'testAuthor1',
+      url: 'testURL1'
+    },
+    {
+      title: 'testTitle2',
+      author: 'testAuthor2',
+      url: 'testURL2'
+    },
+    {
+      title: 'testTitle3',
+      author: 'testAuthor3',
+      url: 'testURL3'
+    },
+  ]
 
   beforeEach(function() {
     cy.request('POST', 'http://localhost:3000/api/testing/reset')
@@ -38,7 +55,7 @@ describe('Start and login tests',function() {
     })
   })
 
-  describe.only('When loged in', function() {
+  describe('When loged in', function() {
     beforeEach(() => {
       cy.login(testUser)
     })
@@ -46,15 +63,15 @@ describe('Start and login tests',function() {
     it('Create new blog', function() {
       cy.contains('button', 'Add new blog').click()
       cy.contains('Create new blog')
-      cy.addNewBlogUi(testNewBlog)
+      cy.addNewBlogUi(testNewBlogs[0])
       cy.get('.blogList').children().should('have.length', 1)
       cy.get('.blogList>.blogList__item')
-        .should('contain',testNewBlog.title)
-        .and('not.contain',testNewBlog.url)
+        .should('contain',testNewBlogs[0].title)
+        .and('not.contain',testNewBlogs[0].url)
     })
 
-    it.only('Add two likes to blog', function() {
-      cy.addNewBlog(testNewBlog)
+    it('Add two likes to blog', function() {
+      cy.addNewBlog(testNewBlogs[0])
       cy.get('.blogList>.blogList__item').contains('button', 'Show more').click()
       cy.get('.blogList>.blogList__item').find('[data-cy=likes-qty]').should('have.contain', '0')
       cy.get('.blogList>.blogList__item').find('[data-cy=likes-qty]').parent().contains('button', 'Like +').as('likeBtn')
@@ -62,6 +79,22 @@ describe('Start and login tests',function() {
       cy.get('.blogList>.blogList__item').find('[data-cy=likes-qty]').should('have.contain', '1')
       cy.get('@likeBtn').click()
       cy.get('.blogList>.blogList__item').find('[data-cy=likes-qty]').should('have.contain', '2')
+    })
+    it('Deleting a blog by its creator', function() {
+      cy.addNewBlog(testNewBlogs[0])
+      cy.get('.blogList>.blogList__item').should('exist')
+      cy.get('.blogList>.blogList__item').contains('button', 'Show more').click()
+      cy.get('.blogList>.blogList__item').find('[data-cy=likes-qty]').parent().contains('button', 'Delete').click()
+      cy.get('.blogList>.blogList__item').should('not.exist')
+    })
+
+    it.only('Deleting a blog by its creator', function() {
+      cy.addNewBlog(testNewBlogs[0])
+      cy.request('POST', 'http://localhost:3000/api/users', testUser2)
+      cy.login(testUser2)
+      cy.get('.blogList>.blogList__item').should('exist')
+      cy.get('.blogList>.blogList__item').contains('button', 'Show more').click()
+      cy.get('.blogList>.blogList__item').contains('button', 'Delete').should('not.exist')
     })
   })
 })

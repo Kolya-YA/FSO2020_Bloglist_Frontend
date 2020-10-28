@@ -38,7 +38,7 @@ Cypress.Commands.add('login', ({ login, password }) => {
   })
     .then(({ body }) => {
       localStorage.setItem('loggedUser', JSON.stringify(body))
-      cy.visit('http://localhost:3000')
+      cy.reload()
     })
 })
 
@@ -49,14 +49,19 @@ Cypress.Commands.add('addNewBlogUi', newBlog => {
   cy.contains('button', 'Create new blog').click()
 })
 
-Cypress.Commands.add('addNewBlog', newBlog => {
-  cy.request({
-    url: 'http://localhost:3003/api/blogs',
-    method: 'POST',
-    body: newBlog,
-    headers: {
-      'Authorization': `bearer ${JSON.parse(localStorage.getItem('loggedUser')).token}`
-    }
-  })
+Cypress.Commands.add('addNewBlog', newBlogs => {
+  const createNewBlog = newBlog => {
+    cy.request({
+      url: 'http://localhost:3003/api/blogs',
+      method: 'POST',
+      body: newBlog,
+      headers: {
+        'Authorization': `bearer ${JSON.parse(localStorage.getItem('loggedUser')).token}`
+      }
+    })
+  }
+  Array.isArray(newBlogs) ?
+    newBlogs.forEach(newBlog => createNewBlog(newBlog)) :
+    createNewBlog(newBlogs)
   cy.reload()
 })
