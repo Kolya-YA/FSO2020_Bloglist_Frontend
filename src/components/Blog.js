@@ -39,7 +39,7 @@ const Blog = ({ blog, user, updateBlog, deleteBlog }) => {
       </div>
       {fullView && <div style={{ display: fullView || 'none2' }}>
         URL: <strong>{blog.url}</strong><br />
-        Likes: <strong data-cy="likes-qty">{blog.likes}</strong> <button onClick={likePlusHandler}>Like +</button><br />
+        Likes: <strong data-cy="likes-qty">{blog.likes}</strong> <button data-cy="like-btn" onClick={likePlusHandler}>Like +</button><br />
         Author: {blog.author}<br />
         {showDelButton() && <button onClick={hadnlerDelButton}>Delete</button>}
       </div>}

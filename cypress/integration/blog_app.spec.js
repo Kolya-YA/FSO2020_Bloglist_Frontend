@@ -73,28 +73,47 @@ describe('Start and login tests',function() {
     it('Add two likes to blog', function() {
       cy.addNewBlog(testNewBlogs[0])
       cy.get('.blogList>.blogList__item').contains('button', 'Show more').click()
-      cy.get('.blogList>.blogList__item').find('[data-cy=likes-qty]').should('have.contain', '0')
-      cy.get('.blogList>.blogList__item').find('[data-cy=likes-qty]').parent().contains('button', 'Like +').as('likeBtn')
+      cy.get('.blogList>.blogList__item').find('[data-cy=likes-qty]').should('have.text', '0')
+      cy.get('.blogList>.blogList__item').find('[data-cy=like-btn]').as('likeBtn')
       cy.get('@likeBtn').click()
-      cy.get('.blogList>.blogList__item').find('[data-cy=likes-qty]').should('have.contain', '1')
+      cy.get('.blogList>.blogList__item').find('[data-cy=likes-qty]').should('have.text', '1')
       cy.get('@likeBtn').click()
-      cy.get('.blogList>.blogList__item').find('[data-cy=likes-qty]').should('have.contain', '2')
+      cy.get('.blogList>.blogList__item').find('[data-cy=likes-qty]').should('have.text', '2')
     })
     it('Deleting a blog by its creator', function() {
       cy.addNewBlog(testNewBlogs[0])
-      cy.get('.blogList>.blogList__item').should('exist')
-      cy.get('.blogList>.blogList__item').contains('button', 'Show more').click()
-      cy.get('.blogList>.blogList__item').find('[data-cy=likes-qty]').parent().contains('button', 'Delete').click()
-      cy.get('.blogList>.blogList__item').should('not.exist')
+      cy.get('.blogList>.blogList__item').as('blogItem')
+      cy.get('@blogItem').should('exist')
+      cy.get('@blogItem').contains('button', 'Show more').click()
+      cy.get('@blogItem').find('[data-cy=likes-qty]').parent().contains('button', 'Delete').click()
+      cy.get('@blogItem').should('not.exist')
     })
 
-    it.only('Deleting a blog by its creator', function() {
+    it('Deleting a blog by its creator', function() {
       cy.addNewBlog(testNewBlogs[0])
       cy.request('POST', 'http://localhost:3000/api/users', testUser2)
       cy.login(testUser2)
-      cy.get('.blogList>.blogList__item').should('exist')
-      cy.get('.blogList>.blogList__item').contains('button', 'Show more').click()
-      cy.get('.blogList>.blogList__item').contains('button', 'Delete').should('not.exist')
+      cy.get('.blogList>.blogList__item').as('blogItem')
+      cy.get('@blogItem').should('exist')
+      cy.get('@blogItem').contains('button', 'Show more').click()
+      cy.get('@blogItem').contains('button', 'Delete').should('not.exist')
+    })
+
+    it('Sorting blogs by likes qty', function() {
+      cy.addNewBlog(testNewBlogs)
+      cy.get('.blogList>.blogList__item')
+        .should('have.length', 3)
+        .each(($item, index) => {
+          cy.wrap($item).contains('button', 'Show more').click()
+          for (let i = 0; i <= index; i++) {
+            cy.wrap($item).find('[data-cy=like-btn]').click()
+            cy.wrap($item).find('[data-cy=likes-qty]').should('have.text', '' + (i + 1))
+          }
+        })
+      cy.get('.blogList>.blogList__item').each(($item, index ) => {
+        const blogTitle = testNewBlogs[testNewBlogs.length - index - 1].title
+        cy.wrap($item).should('contain.text', blogTitle)
+      })
     })
   })
 })
