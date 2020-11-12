@@ -1,17 +1,19 @@
 import React from 'react'
-import PropTypes from 'prop-types'
+import { useSelector } from 'react-redux'
+
 import './styles.css'
 
-const TopNotification = ({ text, error }) => (
+const TopNotification = () => {
 
-  <section className={`notification ${error ? 'notification--error': ''}`}>
-    {text}
-  </section>
-)
+  const notification = useSelector(state => state.notification)
 
-TopNotification.propTypes = {
-  text: PropTypes.string.isRequired,
-  error: PropTypes.bool
+  if(!notification) return null
+
+  return (
+    <section className={`notification ${notification.error ? 'notification--error': ''}`}>
+      {notification.text}
+    </section>
+  )
 }
 
 export default TopNotification
