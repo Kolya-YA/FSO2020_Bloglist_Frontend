@@ -1,34 +1,34 @@
 import React, { useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 
-// const Blog = ({ blog, user, updateBlog, deleteBlog }) => {
+import { deleteBlog, updateBlog } from '../reducers/blogReducer'
+
 const Blog = ({ blog }) => {
+  const dispatch = useDispatch()
   const [fullView, setFullView] = useState(false)
-
+  const user = useSelector(({ user }) => user)
   const toogleView = event => {
     event.preventDefault()
     setFullView(!fullView)
   }
 
-  // const likePlusHandler = event => {
-  //   event.preventDefault()
-  //   const updatedBlog = {
-  //     user: blog.user.id,
-  //     likes: blog.likes + 1,
-  //     author: blog.author,
-  //     title: blog.title,
-  //     url: blog.url,
-  //   }
-  //   updateBlog(blog.id, updatedBlog)
-  // }
+  const likePlusHandler = event => {
+    event.preventDefault()
+    const updatedBlog = {
+      ...blog,
+      user: blog.user.id,
+      likes: blog.likes + 1
+    }
+    dispatch(updateBlog(updatedBlog))
+  }
 
-  // const showDelButton = () => blog.user.name === user.name
+  const showDelButton = blog.user.name === user?.name
 
-  // const hadnlerDelButton = event => {
-  //   event.preventDefault()
-  //   const delMsg = `Do you realy want to delete blog "${blog.title}" by "${blog.user.name}"`
-  //   if (window.confirm(delMsg)) deleteBlog(blog)
-  // }
-
+  const hadnlerDelButton = event => {
+    event.preventDefault()
+    const delMsg = `Do you realy want to delete blog "${blog.title}" by "${blog.user.name}"`
+    if (window.confirm(delMsg)) dispatch(deleteBlog(blog, user.token))
+  }
 
   return (
     <li className='blogList__item'>
@@ -40,9 +40,9 @@ const Blog = ({ blog }) => {
       </div>
       {fullView && <div style={{ display: fullView || 'none2' }}>
         URL: <strong>{blog.url}</strong><br />
-        {/* Likes: <strong data-cy="likes-qty">{blog.likes}</strong> <button data-cy="like-btn" onClick={likePlusHandler}>Like +</button><br /> */}
+        Likes: <strong data-cy="likes-qty">{blog.likes}</strong> <button data-cy="like-btn" onClick={likePlusHandler}>Like +</button><br />
         Author: {blog.author}<br />
-        {/* {showDelButton() && <button onClick={hadnlerDelButton}>Delete</button>} */}
+        {showDelButton && <button onClick={hadnlerDelButton}>Delete</button>}
       </div>}
     </li>
   )}

@@ -1,13 +1,23 @@
-import React from 'react'
+import React, { useState } from 'react'
+import { useDispatch } from 'react-redux'
 
-const LoginForm = props => {
-  const {
-    login,
-    password,
-    setLogin,
-    setPassword,
-    handleLogin,
-  } = props
+import { userLogin } from '../reducers/userReducer'
+
+const LoginForm = () => {
+
+  const [login, setLogin] = useState('pupkine-1@example.com')
+  const [password, setPassword] = useState('123pupkine1')
+
+  const dispatch = useDispatch()
+
+  const handleLogin = async event => {
+    event.preventDefault()
+    const credential = {
+      login: event.target.login.value,
+      password: event.target.password.value
+    }
+    dispatch(userLogin(credential))
+  }
 
   return (
     <>

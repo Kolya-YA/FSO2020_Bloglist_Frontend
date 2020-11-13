@@ -1,11 +1,14 @@
 import React, { useState } from 'react'
-const NewBlog = props => {
-  const {
-    createNewBlog,
-  } = props
+import { useDispatch, useSelector } from 'react-redux'
+import { addBlog } from '../reducers/blogReducer'
+
+const NewBlog = () => {
 
   const [newBlog, setNewBlog] = useState({ title: '', author: '', url: '' })
   const [showNewBlogForm , setShowNewBlogForm] = useState(false)
+
+  const dispatch = useDispatch()
+  const user = useSelector(state => state.user)
 
   const btnText = showNewBlogForm ? 'Cancel' : 'Add new blog'
 
@@ -20,14 +23,14 @@ const NewBlog = props => {
 
   const addNewBlog = event => {
     event.preventDefault()
-    createNewBlog(newBlog)
+    dispatch(addBlog(user, newBlog))
     setNewBlog({ title: '', author: '', url: '' })
     setShowNewBlogForm(false)
   }
-
-  return (
-    <section>
-      { showNewBlogForm &&
+  return user
+    ? (
+      <section>
+        { showNewBlogForm &&
         <div>
           <h3>Create new blog</h3>
           <form onSubmit={addNewBlog}>
@@ -64,10 +67,11 @@ const NewBlog = props => {
             <button type='submit'>Create new blog</button>
           </form>
         </div>
-      }
-      <button onClick={handleToggleNewBlogForm}>{btnText}</button>
-    </section>
-  )
+        }
+        <button onClick={handleToggleNewBlogForm}>{btnText}</button>
+      </section>
+    )
+    : null
 }
 
 export default NewBlog

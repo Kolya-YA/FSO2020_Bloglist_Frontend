@@ -12,7 +12,7 @@ const BlogLIst = () => {
   const blogs = useSelector(({ blogs }) => blogs)
 
   return (
-    <div>
+    <section>
       <h3>Blogs list</h3>
       <ul className='blogList'>
         {[...blogs].sort((a, b) => b.likes - a.likes).map(blog =>
@@ -25,7 +25,7 @@ const BlogLIst = () => {
           />
         )}
       </ul>
-    </div>
+    </section>
   )
 }
 

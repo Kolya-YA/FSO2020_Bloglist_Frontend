@@ -2,24 +2,17 @@ const notificationReducer = (state = null, action) => {
   switch(action.type) {
     case 'SET_NOTIF':
       return action.data
-    case 'DEL_NOTIF':
-      return null
     default:
       return state
   }
 }
 
-export const setNotification = notification => {
-  return {
-    type: 'SET_NOTIF',
-    data: notification
-  }
-}
-
-export const delNotification = () => {
-  return {
-    type: 'DEL_NOTIF',
-    data: null
+export const setNotification = (text, error = false, time = 5000) => {
+  return dispatch => {
+    dispatch({ type: 'SET_NOTIF', data: { text, error } })
+    setTimeout(() => {
+      dispatch({ type: 'SET_NOTIF', data: null })
+    }, time)
   }
 }
 
