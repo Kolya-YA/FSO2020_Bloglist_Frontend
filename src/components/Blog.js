@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
+import { Link } from 'react-router-dom'
 
 import { deleteBlog, updateBlog } from '../reducers/blogReducer'
 
@@ -33,7 +34,7 @@ const Blog = ({ blog }) => {
   return (
     <li className='blogList__item'>
       <div>
-        Title: <strong>{blog.title} </strong>
+        Title: <strong><Link to={`/blogs/${blog.id}`}>{blog.title}</Link> </strong>
         <button onClick={toogleView}>
           Show {fullView ? 'less' : 'more'}
         </button>

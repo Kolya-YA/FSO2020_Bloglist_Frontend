@@ -1,5 +1,6 @@
 import React  from 'react'
 import { useSelector } from 'react-redux'
+import { Link } from 'react-router-dom'
 
 const UserView = () => {
   const blogs = useSelector(({ blogs }) => blogs)
@@ -13,7 +14,7 @@ const UserView = () => {
       <ul className='usersList'>
         {[...usersBlog].sort((a, b) => b.length - a.length).map(uBlogs =>
           <li key={uBlogs[0].user.id}>
-            {uBlogs[0].user.name} — {uBlogs.length}
+            <Link to={`/users/${uBlogs[0].user.id}`}>{uBlogs[0].user.name}</Link> — {uBlogs.length}
           </li>
         )}
       </ul>

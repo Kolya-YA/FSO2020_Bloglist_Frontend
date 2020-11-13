@@ -8,8 +8,9 @@ import './App.css'
 import TopNotifications from './components/TopNotifications/TopNotification'
 import UserLogin from './components/UserLogin'
 import NewBlog from './components/NewBlog'
-import BlogView from './components/BlogView'
-import UserView from './components/UsersView'
+import BlogsView from './components/BlogsView'
+import UsersView from './components/UsersView'
+import SingeBlog from './components/SingleBlog'
 
 const App = () => {
 
@@ -25,11 +26,17 @@ const App = () => {
       <h2>Blogs</h2>
       <NewBlog />
       <Switch>
+        <Route path='/users/:id'>
+          <BlogsView />
+        </Route>
         <Route path='/users'>
-          <UserView />
+          <UsersView />
+        </Route>
+        <Route path='/blogs/:id'>
+          <SingeBlog />
         </Route>
         <Route path='/'>
-          <BlogView />
+          <BlogsView />
         </Route>
       </Switch>
     </div>
