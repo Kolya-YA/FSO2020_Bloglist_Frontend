@@ -30,9 +30,9 @@ const NewBlog = () => {
   return user
     ? (
       <section>
+        <h3>Create new blog</h3>
         { showNewBlogForm &&
         <div>
-          <h3>Create new blog</h3>
           <form onSubmit={addNewBlog}>
             <label>Title:
               <input
