@@ -2,11 +2,13 @@ import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 
-import { deleteBlog, updateBlog } from '../reducers/blogReducer'
+import { deleteBlog, updateBlog } from '../../reducers/blogReducer'
+import { BlogLI } from './BlogListItem.styled'
 
-const Blog = ({ blog }) => {
+const BlogListItem = ({ blog }) => {
   const dispatch = useDispatch()
   const [fullView, setFullView] = useState(false)
+  
   const user = useSelector(({ user }) => user)
   const toogleView = event => {
     event.preventDefault()
@@ -32,20 +34,21 @@ const Blog = ({ blog }) => {
   }
 
   return (
-    <li className='blogList__item'>
-      <div>
-        Title: <strong><Link to={`/blogs/${blog.id}`}>{blog.title}</Link> </strong>
+    <BlogLI>
+      <div className='blog-list-item__top'>
+        <strong><Link to={`/blogs/${blog.id}`}>{blog.title}</Link></strong>
         <button onClick={toogleView}>
           Show {fullView ? 'less' : 'more'}
         </button>
       </div>
-      {fullView && <div style={{ display: fullView || 'none2' }}>
+      {fullView && <div className='blog-list-item__bottom'>
         URL: <strong>{blog.url}</strong><br />
         Likes: <strong data-cy="likes-qty">{blog.likes}</strong> <button data-cy="like-btn" onClick={likePlusHandler}>Like +</button><br />
         Author: {blog.author}<br />
+        Comments: <strong>{blog.comments.length}</strong>
         {showDelButton && <button onClick={hadnlerDelButton}>Delete</button>}
       </div>}
-    </li>
+    </BlogLI>
   )}
 
-export default Blog
+export default BlogListItem

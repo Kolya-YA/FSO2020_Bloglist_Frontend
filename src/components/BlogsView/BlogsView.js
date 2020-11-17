@@ -2,7 +2,8 @@ import React from 'react'
 import { useSelector } from 'react-redux'
 import { useParams } from 'react-router-dom'
 
-import Blog from './Blog'
+import BlogListItem from '../BlogListItem/BlogListItem'
+import { BlogViewList } from './BlogView.styled'
 
 const BlogView = () => {
   const userId = useParams().id
@@ -19,14 +20,14 @@ const BlogView = () => {
   return (
     <section>
       <h3>{blogListTitle}</h3>
-      <ul className='blogList'>
+      <BlogViewList className='blogList'>
         {[...blogs].sort((a, b) => b.likes - a.likes).map(blog =>
-          <Blog
+          <BlogListItem
             key={blog.id}
             blog={blog}
           />
         )}
-      </ul>
+      </BlogViewList>
     </section>
   )
 }
